@@ -7,16 +7,15 @@ import java.util.Set;
 
 public class SujebiTest {
 
+    static int compute(int num) {
+        if (num <= 1) return num;
+
+        return compute(num - 1) + compute(num - 3);
+    }
     public static void main(String args[]) {
 
 
-
-        Map map = new HashMap();
-
-        map.put(1, "A");
-        System.out.println("map = " + map);
-        System.out.println(map.get(1));
-
+        System.out.println("SujebiTest.compute(4) = " + SujebiTest.compute(4));
 
 
     }

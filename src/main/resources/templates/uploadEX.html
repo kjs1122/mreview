@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <input name="uploadFiles" type="file" multiple>
+    <button class="uploadBtn">Upload</button>
+
+    <div class="uploadResult">
+
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous">
+
+    </script>
+    <script>
+
+        const uploadBtn = document.querySelector(".uploadBtn");
+
+        uploadBtn.addEventListener("click", function () {
+
+            const formData = new FormData();
+            let inputFile = document.querySelectorAll("input[type='file']");
+            let files = inputFile[0].files;
+            for (let i = 0; i < files.length; i++) {
+                console.log(files[i]);
+                formData.append('uploadFiles', files[i]);
+            }
+
+            $.ajax({
+                url: '/uploadAjax',
+                processData: false,
+                contentType: false,
+                data: formData,
+                type: 'POST',
+                dataType: 'json',
+                success: function (result) {
+                    showUploadedImages(result)
+                },
+                error: function (jqXHR, textStatus) {
+                    console.log(textStatus);
+                }
+            })
+        });
+        const divArea = document.querySelector(".uploadResult");
+
+        function showUploadedImages(arr) {
+
+            console.log(arr);
+
+            for (let i = 0; i < arr.length; i++) {
+                const divNode = document.createElement("div");
+                const removeBtnNode = document.createElement("button");
+                const btnClass = document.createAttribute("class");
+                const btnData = document.createAttribute("data-name");
+                btnClass.value = "removeBtn";
+                btnData.value = ""+arr[i].imageURL+"";
+                removeBtnNode.setAttributeNode(btnClass);
+                removeBtnNode.setAttributeNode(btnData);
+                removeBtnNode.appendChild(document.createTextNode("REMOVE"));
+
+                const imgNode = document.createElement("img");
+                const imgSrc = document.createAttribute("src")
+                imgSrc.value = "display?fileName="+arr[i].thumbnailURL+"";
+                imgNode.setAttributeNode(imgSrc);
+
+                divNode.appendChild(imgNode)
+                divNode.appendChild(removeBtnNode);
+                divArea.appendChild(divNode);
+            }
+
+        }
+
+        divArea.addEventListener("click", function (e) {
+
+            const target = e.currentTarget.lastElementChild;
+            const fileName = target.lastElementChild.dataset.name;
+            const targetDiv = e.currentTarget;
+
+            $.post('/removeFile', {fileName : fileName}, function (result) {
+                console.log(result);
+                if (result === true) {
+                    target.remove();
+                }
+            })
+        });
+
+
+    </script>
+
+
+</body>
+</html>

@@ -39,6 +39,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.17'
 }
 
 tasks.named('test') {
