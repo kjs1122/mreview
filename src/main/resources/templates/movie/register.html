@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic :: setContent(~{:: content})}">
+
+    <th:block th:fragment="content">
+
+        <h1 class="mt-4" th:text="#{page.title.movieRegister}"></h1>
+
+        <form th:action th:method="post" th:object="${movieDTO}">
+            <div class="form-group">
+                <label th:for="title" th:text="#{label.dto.title}"/>
+                <input type="text" class="form-control" th:field="*{title}" placeholder="Enter Title">
+            </div>
+
+            <div class="form-group fileForm">
+                <label th:for="fileInput" th:text="#{label.dto.imageFiles}"/>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input files" th:id="fileInput" multiple>
+                    <label class="custom-file-label" data-browse="Browse"></label>
+                </div>
+            </div>
+
+            <div class="box">
+
+            </div>
+
+            <button type="button" class="btn btn-primary" th:text="#{button.submit}"></button>
+
+        </form>
+
+        <div class="uploadResult">
+            <ul>
+
+            </ul>
+        </div>
+
+        <script>
+
+            $(document).ready(function (e) {
+
+                const regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
+                const maxSize = 10485760; // 10MB
+
+                function checkExtension(fileName, fileSize) {
+                    if (fileSize >= maxSize) {
+                        alert("파일사이즈 초과");
+                        return false;
+                    }
+
+                    if (regex.test(fileName)) {
+                        alert("해당 종류의 파일은 업로드할 수 없습니다");
+                        return false;
+                    }
+                    return true;
+                }
+
+                $(".custom-file-input").on("change", function () {
+
+                    console.log($(this).val().split("\\"));
+                    const fileName = $(this).val().split("\\").pop();
+                    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+
+                    const formData = new FormData();
+                    const inputFile = $(this);
+                    const files = inputFile[0].files;
+                    let appended = false;
+
+                    for (let i = 0; i < files.length; i++) {
+                        if (!checkExtension(files[i].name, files[i].size)) {
+                            return false;
+                        }
+                        console.log(files[i]);
+                        formData.append("uploadFiles", files[i]);
+                        appended = true;
+                    }
+
+                    // upload를 하지 않는다.
+                    if (!appended) return;
+
+                    for (const value of formData.values()) {
+                        console.log(value);
+                    }
+
+                    // 실제 업로드 부분
+                    $.ajax({
+                        url: '/uploadAjax',
+                        processData: false, // 쿼리스트링 방지
+                        contentType: false, // multipart/form-data로 변경 기본값 application/x-WWW-form-urlencoded; charset=UTF-8
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (result) {
+                            console.log(result);
+                            showResult(result);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(textStatus);
+                        },
+                    })
+                });
+
+                function showResult(uploadResultArr) {
+                    const uploadUL = $(".uploadResult ul");
+
+                    let str = "";
+
+                    $(uploadResultArr).each(function (i, obj) {
+
+                        str += "<li data-name='" + obj.fileName + "' data-path='" + obj.path+ "' data-uuid='" + obj.uuid + "'>";
+                        str += "<div>";
+                        str += "<button type='button' data-file=\'" + obj.imageURL +"\' "
+                        str += "class='btn-warning btn-sm'>X</button><br>";
+                        str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
+                        str += "</div>";
+                        str += "</li>";
+                    });
+                    uploadUL.append(str);
+                }
+
+            });
+        </script>
+
+        <style>
+            .uploadResult {
+                width: 100%;
+                background-color: gray;
+                margin-top: 10px;
+            }
+
+            .uploadResult ul {
+                display: flex;
+                flex-flow: row;
+                justify-content: center;
+                align-items: center;
+                vertical-align: top;
+                overflow: auto;
+            }
+
+            .uploadResult ul li {
+                list-style: none;
+                padding: 10px;
+                margin-left: 2em;
+            }
+
+            .uploadResult ul li img {
+                width: 100px;
+            }
+
+        </style>
+    </th:block>
+
+</th:block>
+
+</html>
