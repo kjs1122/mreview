@@ -55,6 +55,24 @@
                     return true;
                 }
 
+                function showResult(uploadResultArr) {
+                    const uploadUL = $(".uploadResult ul");
+
+                    let str = "";
+
+                    $(uploadResultArr).each(function (i, obj) {
+
+                        str += "<li data-name='" + obj.fileName + "' data-path='" + obj.folderPath+ "' data-uuid='" + obj.uuid + "'>";
+                        str += "<div>";
+                        str += "<button type='button' data-file=\'" + obj.imageURL +"\' "
+                        str += "class='btn-warning btn-sm'>X</button><br>";
+                        str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
+                        str += "</div>";
+                        str += "</li>";
+                    });
+                    uploadUL.append(str);
+                }
+
                 $(".custom-file-input").on("change", function () {
 
                     console.log($(this).val().split("\\"));
@@ -100,23 +118,27 @@
                     })
                 });
 
-                function showResult(uploadResultArr) {
-                    const uploadUL = $(".uploadResult ul");
+                $(".uploadResult").on("click", "li button", function () {
 
-                    let str = "";
+                    console.log("delete file");
 
-                    $(uploadResultArr).each(function (i, obj) {
+                    const targetFile = $(this).data("file");
+                    const targetLi = $(this).closest("li");
 
-                        str += "<li data-name='" + obj.fileName + "' data-path='" + obj.path+ "' data-uuid='" + obj.uuid + "'>";
-                        str += "<div>";
-                        str += "<button type='button' data-file=\'" + obj.imageURL +"\' "
-                        str += "class='btn-warning btn-sm'>X</button><br>";
-                        str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
-                        str += "</div>";
-                        str += "</li>";
-                    });
-                    uploadUL.append(str);
-                }
+                    $.ajax({
+                        url: '/removeFile',
+                        data: {fileName: targetFile},
+                        dataType: 'text',
+                        type: 'POST',
+                        success: function (result) {
+                            alert(result);
+                            targetLi.remove();
+                        }
+                    })
+
+                });
+
+
 
             });
         </script>
