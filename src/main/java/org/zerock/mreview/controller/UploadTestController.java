@@ -11,8 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Log4j2
 public class UploadTestController {
 
-    @GetMapping("/uploadEX")
-    public void uploadFile() {
-        log.info("upload----------------------------");
-    }
+//    @GetMapping("/uploadEX")
+//    public void uploadFile() {
+//        log.info("upload----------------------------");
+//    }
 }

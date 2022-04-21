@@ -71,4 +71,9 @@ class MovieRepositoryTest {
 
     }
 
+    @Test
+    void testList() {
+
+    }
+
 }

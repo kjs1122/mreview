@@ -5,15 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.zerock.mreview.dto.MovieDTO;
-import org.zerock.mreview.dto.MovieImageDTO;
 import org.zerock.mreview.entity.Movie;
-import org.zerock.mreview.entity.MovieImage;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
@@ -30,4 +23,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             "WHERE m.mno = :mno " +
             "GROUP BY mi")
     List<Object[]> getMovieWithAll(@Param("mno") Long mno);
+
 }

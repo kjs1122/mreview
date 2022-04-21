@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic :: setContent(~{:: content})}">
+
+    <th:block th:fragment="content">
+
+        <h1 class="mt-4" th:text="#{page.title.movie.read}"></h1>
+
+        <div class="form-group">
+            <label th:text="#{label.dto.title}"></label>
+            <input type="text" class="form-control" th:field="${dto.title}" readonly>
+        </div>
+        <div class="form-group">
+            <label th:text="#{label.dto.reviewCnt}"></label>
+            <input type="text" class="form-control" th:field="${dto.reviewCnt}" readonly>
+        </div>
+        <div class="form-group">
+            <label th:text="#{label.dto.avgRating}"></label>
+            <input type="text" class="form-control" th:field="${dto.avg}" readonly>
+        </div>
+
+        <style>
+            .uploadResult {
+                width: 100%;
+                background-color: gray;
+                margin-top: 10px;
+            }
+
+            .uploadResult ul {
+                display: flex;
+                flex-flow: row;
+                justify-content: center;
+                align-items: center;
+                vertical-align: top;
+                overflow: auto;
+            }
+
+            .uploadResult ul li {
+                list-style: none;
+                padding: 10px;
+                margin-left: 2em;
+            }
+
+            .uploadResult ul li img {
+                width: 100px;
+            }
+
+        </style>
+
+        <div class="uploadResult">
+            <ul>
+                <li th:each="movieImage : ${dto.imageDTOList}">
+                    <img th:if="${movieImage.path != null}"
+                         th:src="|/display?fileName=${movieImage.getThumbnailURL()}|">
+                </li>
+            </ul>
+        </div>
+
+        <button type="button" class="btn btn-primary">
+            [[#{button.reviewCnt}]]
+            <span class="badge badge-light" th:text="${dto.reviewCnt}"></span>
+        </button>
+
+        <script th:inline="javascript">
+            $(document).ready(function () {
+
+
+            });
+        </script>
+
+    </th:block>
+
+</th:block>
+
+</html>

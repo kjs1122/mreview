@@ -5,7 +5,7 @@
 
     <th:block th:fragment="content">
 
-        <h1 class="mt-4" th:text="#{page.title.movieRegister}"></h1>
+        <h1 class="mt-4" th:text="#{page.title.movie.register}"></h1>
 
         <form th:action th:method="post" th:object="${movieDTO}">
             <div class="form-group">
@@ -75,7 +75,6 @@
 
                 $(".custom-file-input").on("change", function () {
 
-                    console.log($(this).val().split("\\"));
                     const fileName = $(this).val().split("\\").pop();
                     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 
@@ -88,7 +87,6 @@
                         if (!checkExtension(files[i].name, files[i].size)) {
                             return false;
                         }
-                        console.log(files[i]);
                         formData.append("uploadFiles", files[i]);
                         appended = true;
                     }
@@ -97,7 +95,6 @@
                     if (!appended) return;
 
                     for (const value of formData.values()) {
-                        console.log(value);
                     }
 
                     // 실제 업로드 부분
@@ -118,6 +115,9 @@
                     })
                 });
 
+                /**
+                 * 업로드 파일 삭제
+                 */
                 $(".uploadResult").on("click", "li button", function () {
 
                     console.log("delete file");
@@ -135,10 +135,31 @@
                             targetLi.remove();
                         }
                     })
-
                 });
 
+                /**
+                 * Register Form Submit
+                 */
+                $(".btn-primary").on("click", function (e) {
+                    e.stopPropagation();
 
+                    let str = "";
+
+                    $(".uploadResult li").each(function (i, obj) {
+                        const target = $(obj);
+
+                        str += "<input type='hidden' name='imageDTOList[" + i + "].imgName'" +
+                            "value='" + target.data('name') + "'>";
+                        str += "<input type='hidden' name='imageDTOList[" + i + "].path'" +
+                            "value='" + target.data('path') + "'>";
+                        str += "<input type='hidden' name='imageDTOList[" + i + "].uuid'" +
+                            "value='" + target.data('uuid') + "'>";
+                    });
+
+                    $(".box").html(str);
+
+                    $("form").submit();
+                });
 
             });
         </script>
