@@ -20,6 +20,8 @@
             <input type="text" class="form-control" th:field="${dto.avg}" readonly>
         </div>
 
+        <th:block th:replace="/modal/read_reviewModal :: reviewModal"></th:block>
+
         <style>
             .uploadResult {
                 width: 100%;

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="reviewModal">
+
+    <div class="reviewModla modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{modal.title.review}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" th:text="#{modal.btn.close}"></span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label th:text="#{label.dto.reviewerId}"></label>
+                        <input type="text" class="form-control" name="mid">
+                    </div>
+                    <div class="form-group">
+                        <label th:text="#{label.dto.reviewGrade}">
+                            <span class="grade"></span>
+                            <div class="starrr"></div>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label th:text="#{label.dto.reviewText}"></label>
+                        <input type="text" class="form-control" name="text" placeholder="Good Movie!">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            th:text="#{button.close}">
+                    </button>
+                    <button type="button" class="btn btn-primary reviewSaveBtn"
+                            th:text="#{button.save}">
+                    </button>
+                    <button type="button" class="btn btn-warning modifyBtn"
+                            th:text="#{button.modify}">
+                    </button>
+                    <button type="button" class="btn btn-danger removeBtn"
+                            th:text="#{button.remove}">
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="imageModal modal" tabindex="-2" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{modal.title.image}"></h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" th:text="#{modal.btn.close}"></span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            th:text="#{button.close}">
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+</html>
