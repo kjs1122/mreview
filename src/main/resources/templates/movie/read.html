@@ -20,7 +20,24 @@
             <input type="text" class="form-control" th:field="${dto.avg}" readonly>
         </div>
 
+        <div class="uploadResult">
+            <ul>
+                <li th:each="movieImage : ${dto.imageDTOList}">
+                    <img th:if="${movieImage.path != null}"
+                         th:src="|/display?fileName=${movieImage.getThumbnailURL()}|">
+                </li>
+            </ul>
+        </div>
+
+        <button type="button" class="btn btn-primary">
+            [[#{button.reviewCnt}]]
+            <span class="badge badge-light" th:text="${dto.reviewCnt}"></span>
+        </button>
+
         <th:block th:replace="/modal/read_reviewModal :: reviewModal"></th:block>
+
+
+
 
         <style>
             .uploadResult {
@@ -50,24 +67,25 @@
 
         </style>
 
-        <div class="uploadResult">
-            <ul>
-                <li th:each="movieImage : ${dto.imageDTOList}">
-                    <img th:if="${movieImage.path != null}"
-                         th:src="|/display?fileName=${movieImage.getThumbnailURL()}|">
-                </li>
-            </ul>
-        </div>
 
-        <button type="button" class="btn btn-primary">
-            [[#{button.reviewCnt}]]
-            <span class="badge badge-light" th:text="${dto.reviewCnt}"></span>
-        </button>
 
         <script th:inline="javascript">
             $(document).ready(function () {
 
+                let grade = 0;
+                const mno = [[${dto.mno}]];
 
+                $('.starrr').starrr({
+                    rating: grade,
+                    change: function (e, value) {
+                        if (value) {
+                            console.log(value);
+                            grade = value;
+                        }
+                    }
+                })
+
+                $(".reviewModal").modal("show");
             });
         </script>
 

@@ -3,7 +3,11 @@
 
 <th:block th:fragment="reviewModal">
 
-    <div class="reviewModla modal" tabindex="-1" role="dialog">
+    <script th:src="@{/vendor/starrr.js}"></script>
+    <link th:href="@{/css/starrr.css}" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
+
+    <div class="reviewModal modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 
@@ -22,6 +26,7 @@
                     <div class="form-group">
                         <label th:text="#{label.dto.reviewGrade}">
                             <span class="grade"></span>
+                        </label>
                             <div class="starrr"></div>
                         </label>
                     </div>
