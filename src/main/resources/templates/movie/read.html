@@ -22,7 +22,7 @@
 
         <div class="uploadResult">
             <ul>
-                <li th:each="movieImage : ${dto.imageDTOList}">
+                <li th:each="movieImage : ${dto.imageDTOList}" th:data-file="${movieImage.getThumbnailURL()}">
                     <img th:if="${movieImage.path != null}"
                          th:src="|/display?fileName=${movieImage.getThumbnailURL()}|">
                 </li>
@@ -70,6 +70,13 @@
             }
 
         </style>
+
+
+        <script th:inline="javascript">
+
+
+        </script>
+
 
 
 

@@ -45,6 +45,7 @@ public class ReviewController {
         log.info("---------------------modify MovieReview--------------------------------");
         log.info("reviewDTO : {}", movieReviewDTO);
 
+        reviewService.modify(movieReviewDTO);
 
         return new ResponseEntity<>(reviewnum, HttpStatus.OK);
     }

@@ -137,6 +137,105 @@
                 reviewModal.hide();
             });
 
+            function getMovieReviews() {
+
+                function formatTime(str) {
+
+                    let date = new Date(str);
+
+                    return date.getFullYear() + "/" +
+                        (date.getMonth() + 1) + "/" +
+                        date.getDate() + ' ' +
+                        date.getHours() + ":" +
+                        date.getMinutes();
+                }
+
+                $.getJSON("/reviews/" + mno + "/all", function (arr) {
+                    let str = "";
+
+                    $.each(arr, function (idx, review) {
+
+                        str += '<div class="card-body" data-reviewnum=' + review.reviewnum + ' data-mid=' + review.mid + '>';
+                        str += '<h5 class="card-title">' + review.text + '<span>' + review.grade + '</span></h5>';
+                        str += '<h6 class="card-subtitle mb-2 text-muted">' + review.nickname + '</h6>';
+                        str += '<p class="card-text">' + formatTime(review.regDate) + '</p>';
+                        str += '</div>';
+                    });
+
+                    $(".reviewList").html(str);
+                });
+
+            }
+
+            getMovieReviews();
+
+            // modify review
+
+            let reviewnum;
+
+            $(".reviewList").on("click", ".card-body", function () {
+
+                $(".reviewSaveBtn").hide();
+                $(".removeBtn, .modifyBtn").show();
+
+                let targetReview = $(this);
+
+                reviewnum = targetReview.data("reviewnum");
+                inputMid.val(targetReview.data("mid"));
+                inputText.val(targetReview.find('.card-title').clone().children().remove().end().text());
+
+                let grade = targetReview.find('.card-title span').html();
+                $(".starrr a:nth-child(" + grade + ")").trigger('click');
+
+
+                $('.reviewModal').modal('show');
+
+            });
+
+            $(".modifyBtn").on("click", function () {
+
+                let data = {reviewnum:reviewnum, mno:mno, grade:grade, text: inputText.val(), mid: inputMid.val()};
+                console.log(data);
+
+                $.ajax({
+                    url: '/reviews/' + mno + "/" + reviewnum,
+                    type: "PUT",
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=UTF-8",
+                    dataType: "text",
+                    success: function (result) {
+                        self.location.reload();
+
+                    }
+                })
+                reviewModal.modal("hide");
+            });
+
+            $(".removeBtn").on("click", function () {
+
+                let data = {reviewnum: reviewnum};
+
+                $.ajax({
+                    url: '/reviews/' + mno + "/" + reviewnum,
+                    type: 'DELETE',
+                    contentType: "application/json; charset=UTF-8",
+                    dataType: "text",
+                    success: function (result) {
+                        self.location.reload();
+                    }
+                })
+                reviewModal.modal("hide");
+            });
+
+            $(".uploadResult li").click(function () {
+
+                const file = $(this).data("file");
+
+                $(".imageModal .modal-body").html("<img style='width: 100%' src='/display?fileName="+file+"&size=1'>");
+
+                $(".imageModal").modal("show");
+            });
+
 
         });
     </script>
