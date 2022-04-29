@@ -34,6 +34,10 @@
             <span class="badge badge-light" th:text="${dto.reviewCnt}"></span>
         </button>
 
+        <button type="button" class="btn btn-info addReviewBtn" th:text="#{button.review.register}"></button>
+
+        <div class="list-group reviewList"></div>
+
         <th:block th:replace="/modal/read_reviewModal :: reviewModal"></th:block>
 
 
@@ -69,25 +73,7 @@
 
 
 
-        <script th:inline="javascript">
-            $(document).ready(function () {
 
-                let grade = 0;
-                const mno = [[${dto.mno}]];
-
-                $('.starrr').starrr({
-                    rating: grade,
-                    change: function (e, value) {
-                        if (value) {
-                            console.log(value);
-                            grade = value;
-                        }
-                    }
-                })
-
-                $(".reviewModal").modal("show");
-            });
-        </script>
 
     </th:block>
 
